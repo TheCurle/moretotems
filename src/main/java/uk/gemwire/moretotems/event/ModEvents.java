@@ -1,4 +1,4 @@
-package samebutdifferent.mobtotems.event;
+package uk.gemwire.moretotems.event;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import samebutdifferent.mobtotems.init.ModItems;
-import samebutdifferent.mobtotems.item.TotemItem;
+import uk.gemwire.moretotems.MoreTotems;
+import uk.gemwire.moretotems.item.TotemItem;
 
 public class ModEvents {
     @SubscribeEvent
@@ -26,8 +26,8 @@ public class ModEvents {
         if (entity instanceof PlayerEntity) {
             for (Hand hand : Hand.values()) {
                 ItemStack heldItem = entity.getItemInHand(hand);
-                if (heldItem.getItem() == ModItems.TOTEM_OF_ESCAPING.get()) {
-                    TotemItem.defaultTotemBehavior(event, entity, heldItem, ModItems.TOTEM_OF_ESCAPING.get());
+                if (heldItem.getItem() == MoreTotems.TOTEM_OF_ESCAPING.get()) {
+                    TotemItem.defaultTotemBehavior(event, entity, heldItem, MoreTotems.TOTEM_OF_ESCAPING.get());
                     entity.addEffect(new EffectInstance(Effects.INVISIBILITY, 200, 0));
                     for(int i = 0; i < 16; ++i) {
                         double xRand = entity.getX() + (entity.getRandom().nextDouble() - 0.5D) * 16.0D;
@@ -46,9 +46,9 @@ public class ModEvents {
     public void mobDropTotem(LivingDropsEvent event) {
         LivingEntity entity = event.getEntityLiving();
         World world = entity.getCommandSenderWorld();
-        if (Math.random() <= 1.0) {
+        if (Math.random() <= 0.05) {
             if (entity instanceof EndermanEntity)
-                event.getDrops().add(new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(ModItems.TOTEM_OF_ESCAPING.get())));
+                event.getDrops().add(new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(MoreTotems.TOTEM_OF_ESCAPING.get())));
         }
     }
 }

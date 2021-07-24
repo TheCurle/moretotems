@@ -1,4 +1,4 @@
-package samebutdifferent.mobtotems.item;
+package uk.gemwire.moretotems.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -12,11 +12,11 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import samebutdifferent.mobtotems.MobTotems;
+import uk.gemwire.moretotems.MoreTotems;
 
 public class TotemItem extends Item {
     public TotemItem() {
-        super(new Item.Properties().tab(MobTotems.GROUP).stacksTo(1).rarity(Rarity.UNCOMMON));
+        super(new Item.Properties().tab(MoreTotems.GROUP).stacksTo(1).rarity(Rarity.UNCOMMON));
     }
 
     public static void defaultTotemBehavior(LivingDeathEvent event, LivingEntity entity, ItemStack heldItem, Item animationItem) {
