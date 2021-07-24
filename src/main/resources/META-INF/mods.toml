@@ -1,10 +1,10 @@
 modLoader="javafml"
-loaderVersion="[36,)"
+loaderVersion="[37,)"
 license="MIT License"
 
 [[mods]]
 modId="moretotems"
-version="1.0.0"
+version="2.0.0"
 
 displayName="More Totems"
 
@@ -17,13 +17,13 @@ Adds totems for each mob in the game!
 [[dependencies.moretotems]]
    modId="forge"
    mandatory=true
-   versionRange="[36,)"
+   versionRange="[37,)"
    ordering="NONE"
    side="BOTH"
 
 [[dependencies.moretotems]]
    modId="minecraft"
    mandatory=true
-   versionRange="[1.16.3,1.17)"
+   versionRange="[1.17.1,1.18)"
    ordering="NONE"
    side="BOTH"
