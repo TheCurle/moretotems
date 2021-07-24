@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'uk.gemwire'
-version = '1.0.0'
+version = '2.0.0'
 archivesBaseName = 'moretotems'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(16) // Mojang ships Java 8 to end users, so your mod should target Java 8.
@@ -80,7 +80,7 @@ jar {
         attributes([
                 "Specification-Title"     : "moretotems",
                 "Specification-Vendor"    : "Gemwire",
-                "Specification-Version"   : "1",
+                "Specification-Version"   : "2",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.version,
                 "Implementation-Vendor"   : "Gemwire",
