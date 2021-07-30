@@ -16,6 +16,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -149,7 +150,7 @@ public class ModEvents {
                         break;
 
                     case "clock_totem":
-                        // Save the plahyer from death.
+                        // Save the player from death.
                         // Move them to their respawn point.
                         CommonTotemItem.defaultTotemBehavior(event, entity, heldItem, MoreTotems.CLOCK_TOTEM.get(), true);
                         if(!world.isClientSide) {
@@ -158,7 +159,7 @@ public class ModEvents {
                             if(!(player.getLevel().dimension() == player.getRespawnDimension()))
                                 player.teleportTo(ServerLifecycleHooks.getCurrentServer().getLevel(player.getLevel().dimension()), spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ(), 0, 0);
                             else
-                                player.teleportTo(spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ());
+                                player.setPos(spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ());
                         }
 
                         break;
