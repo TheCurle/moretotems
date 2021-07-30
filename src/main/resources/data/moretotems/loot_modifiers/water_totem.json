@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "condition": "entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:dolphin"
+      }
+    },
+    {
+      "condition": "random_chance",
+      "predicate": {
+        "chance": 0.01
+      }
+    }
+  ],
+
+  "totem": "moretotems:water_totem"
+}

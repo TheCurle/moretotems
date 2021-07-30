@@ -1,0 +1,16 @@
+{
+  "conditions": [
+    {
+      "condition": "block_state_properties",
+      "block": "minecraft:purple_bed"
+    },
+    {
+      "condition": "random_chance",
+      "predicate": {
+        "chance": 0.01
+      }
+    }
+  ],
+
+  "totem": "moretotems:clock_totem"
+}
