@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
@@ -13,12 +14,14 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import uk.gemwire.moretotems.MoreTotems;
 import uk.gemwire.moretotems.item.CommonTotemItem;
 
@@ -27,9 +30,10 @@ import java.util.Objects;
 public class ModEvents {
     @SubscribeEvent
     public void useTotem(LivingDeathEvent event) {
-        LivingEntity entity = event.getEntityLiving();
-        World world = entity.level;
-        if (entity instanceof PlayerEntity) {
+        LivingEntity living = event.getEntityLiving();
+        World world = living.level;
+        if (living instanceof PlayerEntity) {
+            PlayerEntity entity = (PlayerEntity) living;
             for (Hand hand : Hand.values()) {
                 ItemStack heldItem = entity.getItemInHand(hand);
 
@@ -109,9 +113,9 @@ public class ModEvents {
                         CommonTotemItem.defaultTotemBehavior(event, entity, heldItem, MoreTotems.DYE_TOTEM.get(), true);
 
                         // for every item in the player's inventory: check if dyeable. if true, remove dye.
-                        ((PlayerEntity) entity).inventory.items.forEach(item -> { if (item.getItem() instanceof IDyeableArmorItem) ((IDyeableArmorItem) item.getItem()).clearColor(item); });
+                        entity.inventory.items.forEach(item -> { if (item.getItem() instanceof IDyeableArmorItem) ((IDyeableArmorItem) item.getItem()).clearColor(item); });
                         // for every item in the players' inventory: check if firework star. if true, remove colors.
-                        ((PlayerEntity) entity).inventory.items.forEach(item -> { if (item.getItem() instanceof FireworkStarItem) { item.getTagElement("Explosion").putIntArray("Colors", new int[] {});} });
+                        entity.inventory.items.forEach(item -> { if (item.getItem() instanceof FireworkStarItem) { item.getTagElement("Explosion").putIntArray("Colors", new int[] {});} });
                         // TODO: firework rockets
                         // TODO: shulker boxes
                         // TODO: wool
@@ -121,7 +125,7 @@ public class ModEvents {
                         // TODO: beds
 
                         // for every item in the player's inventory: check if flower. if true, convert to white tulip.
-                        ((PlayerEntity) entity).inventory.items.forEach(item -> { if (item.getItem() instanceof BlockItem && ((BlockItem) item.getItem()).getBlock() instanceof FlowerBlock) item = new ItemStack(Items.WHITE_TULIP, item.getCount()); });
+                        entity.inventory.items.forEach(item -> { if (item.getItem() instanceof BlockItem && ((BlockItem) item.getItem()).getBlock() instanceof FlowerBlock) item = new ItemStack(Items.WHITE_TULIP, item.getCount()); });
                         break;
 
                     case "bread_totem":
@@ -130,7 +134,7 @@ public class ModEvents {
                         CommonTotemItem.defaultTotemBehavior(event, entity, heldItem, MoreTotems.BREAD_TOTEM.get(), true);
 
                         // for every item in the player's inventory: get item namespace and path. compare against "minecraft:bread". if match, remove.
-                        ((PlayerEntity) entity).inventory.items.forEach(item -> { if (Objects.requireNonNull(item.getItem().getRegistryName()).getNamespace().equals("minecraft") && item.getItem().getRegistryName().getPath().equals("bread")) item.setCount(0); });
+                        entity.inventory.items.forEach(item -> { if (Objects.requireNonNull(item.getItem().getRegistryName()).getNamespace().equals("minecraft") && item.getItem().getRegistryName().getPath().equals("bread")) item.setCount(0); });
                         break;
 
                     case "water_totem":
@@ -139,9 +143,26 @@ public class ModEvents {
                         // Wet sponges.
                         CommonTotemItem.defaultTotemBehavior(event, entity, heldItem, MoreTotems.WATER_TOTEM.get(), true);
                         // for every item in the player's inventory: check if bucket. check if empty. if true, fill with water.
-                        ((PlayerEntity) entity).inventory.items.forEach(item -> { if (item.getItem() instanceof BucketItem && ((BucketItem) item.getItem()).getFluid() == Fluids.EMPTY) item = new ItemStack(Items.WATER_BUCKET); });
+                        entity.inventory.items.forEach(item -> { if (item.getItem() instanceof BucketItem && ((BucketItem) item.getItem()).getFluid() == Fluids.EMPTY) item = new ItemStack(Items.WATER_BUCKET); });
                         // for every item in the player's inventory; check if sponge. check if dry. if true, make wet.
-                        ((PlayerEntity) entity).inventory.items.forEach(item -> { if (item.getItem() instanceof BlockItem && ((BlockItem) item.getItem()).getBlock() instanceof SpongeBlock) item = new ItemStack(Items.WET_SPONGE, item.getCount()); });
+                        entity.inventory.items.forEach(item -> { if (item.getItem() instanceof BlockItem && ((BlockItem) item.getItem()).getBlock() instanceof SpongeBlock) item = new ItemStack(Items.WET_SPONGE, item.getCount()); });
+                        break;
+
+                    case "clock_totem":
+                        // Save the plahyer from death.
+                        // Move them to their respawn point.
+                        CommonTotemItem.defaultTotemBehavior(event, entity, heldItem, MoreTotems.CLOCK_TOTEM.get(), true);
+                        if(!world.isClientSide) {
+                            ServerPlayerEntity player = (ServerPlayerEntity) entity;
+                            BlockPos spawnLoc = player.getRespawnPosition();
+                            if(!(player.getLevel().dimension() == player.getRespawnDimension()))
+                                player.teleportTo(ServerLifecycleHooks.getCurrentServer().getLevel(player.getLevel().dimension()), spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ(), 0, 0);
+                            else
+                                player.teleportTo(spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ());
+                        }
+
+                        break;
+
                 }
             }
         }

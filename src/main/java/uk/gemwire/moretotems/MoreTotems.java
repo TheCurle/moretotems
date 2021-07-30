@@ -39,6 +39,7 @@ public class MoreTotems {
     public static final RegistryObject<Item> DYE_TOTEM = ITEMS.register("dye_totem", CommonTotemItem::new);
     public static final RegistryObject<Item> BREAD_TOTEM = ITEMS.register("bread_totem", CommonTotemItem::new);
     public static final RegistryObject<Item> WATER_TOTEM = ITEMS.register("water_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> CLOCK_TOTEM = ITEMS.register("clock_totem", CommonTotemItem::new);
 
     public static final ItemGroup GROUP = new ItemGroup(MoreTotems.MOD_ID) {
         @Override
