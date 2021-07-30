@@ -1,0 +1,16 @@
+{
+  "conditions": [
+    {
+      "condition": "block_state_properties",
+      "block": "minecraft_wheat"
+    },
+    {
+      "condition": "random_chance",
+      "predicate": {
+        "chance": 0.000001
+      }
+    }
+  ],
+
+  "totem": "moretotems:wheat_totem"
+}
