@@ -14,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.gemwire.moretotems.event.ModEvents;
-import uk.gemwire.moretotems.item.TotemItem;
+import uk.gemwire.moretotems.item.CommonTotemItem;
 
 /**
  * Credit to SameButDifferent for the original MobTotems mod.
@@ -28,7 +28,17 @@ public class MoreTotems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MoreTotems.MOD_ID);
 
-    public static final RegistryObject<Item> TOTEM_OF_ESCAPING = ITEMS.register("totem_of_escaping", TotemItem::new);
+    public static final RegistryObject<Item> ENDER_TOTEM = ITEMS.register("ender_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> CAT_TOTEM = ITEMS.register("cat_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> IRON_GOLEM_TOTEM = ITEMS.register("iron_golem_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> CREEPER_TOTEM = ITEMS.register("creeper_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> AXOLOTL_TOTEM = ITEMS.register("axolotl_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> SHULKER_TOTEM = ITEMS.register("shulker_totem", CommonTotemItem::new);
+
+    public static final RegistryObject<Item> DYE_TOTEM = ITEMS.register("dye_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> BREAD_TOTEM = ITEMS.register("bread_totem", CommonTotemItem::new);
+    public static final RegistryObject<Item> WATER_TOTEM = ITEMS.register("water_totem", CommonTotemItem::new);
 
     public static final ItemGroup GROUP = new ItemGroup(MoreTotems.MOD_ID) {
         @Override

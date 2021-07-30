@@ -1,4 +1,15 @@
 {
   "itemGroup.moretotems": "More Totems",
-  "item.moretotems.totem_of_escaping": "Totem of Gettin' Out Of There"
+
+  "item.moretotems.ender_totem": "Totem of Sneakin'",
+  "item.moretotems.cat_totem": "Totem of Nine Lives",
+  "item.moretotems.wolf_totem": "Totem of Gettin' Out Of There",
+  "item.moretotems.iron_golem_totem": "Totem of Fightin'",
+  "item.moretotems.creeper_totem": "Totem of Explodin'",
+  "item.moretotems.axolotl_totem": "Totem of Swimmin'",
+  "item.moretotems.shulker_totem": "Totem of Flyin'",
+
+  "item.moretotems.dye_totem": "Totem of Undyeing",
+  "item.moretotems.bread_totem": "Totem of Unryeing",
+  "item.moretotems.water_totem": "Totem of Undrying"
 }

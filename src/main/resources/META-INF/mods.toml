@@ -11,7 +11,7 @@ displayName="More Totems"
 authors="Curle, SameButDifferent"
 
 description='''
-Adds totems for each mob in the game!
+Adds more totems for various situations!
 '''
 
 [[dependencies.moretotems]]

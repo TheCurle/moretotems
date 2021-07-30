@@ -2,7 +2,6 @@ package uk.gemwire.moretotems.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -14,20 +13,21 @@ import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import uk.gemwire.moretotems.MoreTotems;
 
-public class TotemItem extends Item {
-    public TotemItem() {
-        super(new Item.Properties().tab(MoreTotems.GROUP).stacksTo(1).rarity(Rarity.UNCOMMON));
+public class CommonTotemItem extends Item {
+    public CommonTotemItem() {
+        super(new Item.Properties().tab(MoreTotems.GROUP).stacksTo(1).rarity(Rarity.EPIC));
     }
 
-    public static void defaultTotemBehavior(LivingDeathEvent event, LivingEntity entity, ItemStack heldItem, Item animationItem) {
+    public static void defaultTotemBehavior(LivingDeathEvent event, LivingEntity entity, ItemStack heldItem, Item animationItem, boolean removeItem) {
         event.setCanceled(true);
-        heldItem.shrink(1);
+        if (removeItem)
+            heldItem.shrink(1);
         entity.setHealth(1.0F);
         entity.removeAllEffects();
         entity.addEffect(new EffectInstance(Effects.REGENERATION, 900, 1));
         entity.addEffect(new EffectInstance(Effects.ABSORPTION, 100, 1));
         Minecraft.getInstance().particleEngine.createTrackingEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
-        entity.level.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.TOTEM_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+        entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.TOTEM_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
         entity.playSound(SoundEvents.TOTEM_USE, 1.0F, 1.0F);
         Minecraft.getInstance().gameRenderer.displayItemActivation(new ItemStack(animationItem));
     }

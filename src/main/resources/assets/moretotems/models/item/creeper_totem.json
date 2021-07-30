@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "moretotems:item/totem_of_escaping"
+    "layer0": "moretotems:item/creeper_totem"
   }
 }
