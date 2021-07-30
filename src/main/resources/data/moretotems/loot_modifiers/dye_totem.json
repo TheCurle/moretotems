@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "condition": "entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:sheep"
+      }
+    },
+    {
+      "condition": "name_contains",
+      "entity": "this",
+      "string": "Jeb_"
+    },
+    {
+      "condition": "random_chance",
+      "predicate": {
+        "chance": 0.01
+      }
+    }
+  ],
+
+  "totem": "moretotems:dye_totem"
+}
