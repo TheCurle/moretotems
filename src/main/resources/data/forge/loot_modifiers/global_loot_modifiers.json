@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "entries": [
+    "moretotems:ender_totem",
+    "moretotems:wolf_totem",
+    "moretotems:cat_totem",
+    "moretotems:iron_golem_totem",
+    "moretotems:creeper_totem",
+    "moretotems:axolotl_totem",
+    "moretotems:shulker_totem",
+
+    "moretotems:bread_totem",
+    "moretotems:dye_totem",
+    "moretotems:water_totem",
+    "moretotems:clock_totem"
+  ]
+}

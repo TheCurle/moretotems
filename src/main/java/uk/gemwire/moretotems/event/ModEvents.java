@@ -16,9 +16,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -152,30 +152,31 @@ public class ModEvents {
                     case "clock_totem":
                         // Save the player from death.
                         // Move them to their respawn point.
+                        // If the player doesn't have a respawn point, put them at the Overworld's spawnpoint
                         CommonTotemItem.defaultTotemBehavior(event, entity, heldItem, MoreTotems.CLOCK_TOTEM.get(), true);
                         if(!world.isClientSide) {
                             ServerPlayerEntity player = (ServerPlayerEntity) entity;
                             BlockPos spawnLoc = player.getRespawnPosition();
-                            if(!(player.getLevel().dimension() == player.getRespawnDimension()))
-                                player.teleportTo(ServerLifecycleHooks.getCurrentServer().getLevel(player.getLevel().dimension()), spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ(), 0, 0);
+                            ServerWorld overworld = ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD);
+                            if (overworld == null)
+                                break;
+
+                            if (spawnLoc == null)
+                                if (!(player.getLevel().dimension() == World.OVERWORLD))
+                                    player.teleportTo(overworld, overworld.getSharedSpawnPos().getX(), overworld.getSharedSpawnPos().getY(), overworld.getSharedSpawnPos().getZ(), overworld.getSharedSpawnAngle(), 0);
+                                else
+                                    player.setPos(overworld.getSharedSpawnPos().getX(), overworld.getSharedSpawnPos().getY(), overworld.getSharedSpawnPos().getZ());
                             else
-                                player.setPos(spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ());
+                                if (!(player.getLevel().dimension() == player.getRespawnDimension()))
+                                    player.teleportTo(ServerLifecycleHooks.getCurrentServer().getLevel(player.getLevel().dimension()), spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ(), 0, 0);
+                                else
+                                    player.setPos(spawnLoc.getX(), spawnLoc.getY(), spawnLoc.getZ());
                         }
 
                         break;
 
                 }
             }
-        }
-    }
-
-    @SubscribeEvent
-    public void mobDropTotem(LivingDropsEvent event) {
-        LivingEntity entity = event.getEntityLiving();
-        World world = entity.getCommandSenderWorld();
-        if (Math.random() <= 0.05) {
-            if (entity instanceof EndermanEntity)
-                event.getDrops().add(new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(MoreTotems.ENDER_TOTEM.get())));
         }
     }
 }

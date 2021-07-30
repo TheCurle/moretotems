@@ -4,6 +4,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -15,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.gemwire.moretotems.event.ModEvents;
 import uk.gemwire.moretotems.item.CommonTotemItem;
+import uk.gemwire.moretotems.loot.EntityNameCondition;
 
 /**
  * Credit to SameButDifferent for the original MobTotems mod.
@@ -53,5 +56,8 @@ public class MoreTotems {
         ITEMS.register(bus);
         MinecraftForge.EVENT_BUS.register(new ModEvents());
         MinecraftForge.EVENT_BUS.register(this);
+
+        // Register the our custom loot condition
+        Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation("moretotems:name_contains"), EntityNameCondition.NAME_CONTAINS);
     }
 }
