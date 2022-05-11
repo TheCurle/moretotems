@@ -1,16 +1,19 @@
 package uk.gemwire.moretotems.item;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.loading.FMLLoader;
+import uk.gemwire.moretotems.ClientStuff;
 import uk.gemwire.moretotems.MoreTotems;
 
 public class CommonTotemItem extends Item {
@@ -24,11 +27,16 @@ public class CommonTotemItem extends Item {
             heldItem.shrink(1);
         entity.setHealth(1.0F);
         entity.removeAllEffects();
-        entity.addEffect(new EffectInstance(Effects.REGENERATION, 900, 1));
-        entity.addEffect(new EffectInstance(Effects.ABSORPTION, 100, 1));
-        Minecraft.getInstance().particleEngine.createTrackingEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
-        entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.TOTEM_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+        entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+        entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
+
+        if (FMLLoader.getDist() == Dist.CLIENT)
+            ClientStuff.particleStuff(entity);
+
+        entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
         entity.playSound(SoundEvents.TOTEM_USE, 1.0F, 1.0F);
-        Minecraft.getInstance().gameRenderer.displayItemActivation(new ItemStack(animationItem));
+
+        if (FMLLoader.getDist() == Dist.CLIENT)
+            ClientStuff.totemActivated(animationItem);
     }
 }

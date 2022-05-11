@@ -3,12 +3,12 @@ package uk.gemwire.moretotems.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.entity.Entity;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import uk.gemwire.moretotems.MoreTotems;
 
 /**
  * A custom Loot Table condition.
@@ -27,9 +27,7 @@ import net.minecraft.util.JSONUtils;
  *
  * @author Curle
  */
-public class EntityNameCondition implements ILootCondition {
-
-    public static final LootConditionType NAME_CONTAINS = new LootConditionType(new EntityNameCondition.Serializer());
+public class EntityNameCondition implements LootItemCondition {
 
     private final String nameSubstring;
     private final LootContext.EntityTarget entityTarget;
@@ -40,8 +38,8 @@ public class EntityNameCondition implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType() {
-        return NAME_CONTAINS;
+    public LootItemConditionType getType() {
+        return MoreTotems.NAME_CONTAINS_CONDITION.get();
     }
 
     @Override
@@ -57,7 +55,7 @@ public class EntityNameCondition implements ILootCondition {
 
     }
 
-    public static class Serializer implements ILootSerializer<EntityNameCondition> {
+    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<EntityNameCondition> {
 
         @Override
         public void serialize(JsonObject object, EntityNameCondition condition, JsonSerializationContext context) {
@@ -67,8 +65,8 @@ public class EntityNameCondition implements ILootCondition {
 
         @Override
         public EntityNameCondition deserialize(JsonObject object, JsonDeserializationContext context) {
-            LootContext.EntityTarget target = JSONUtils.getAsObject(object, "entity", context, LootContext.EntityTarget.class);
-            String substr = JSONUtils.getAsString(object, "string", "null");
+            LootContext.EntityTarget target = GsonHelper.getAsObject(object, "entity", context, LootContext.EntityTarget.class);
+            String substr = GsonHelper.getAsString(object, "string", "null");
 
             return new EntityNameCondition(target, substr);
         }
